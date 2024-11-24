@@ -1,0 +1,1 @@
+export type FilterT = 'read' | 'unread' | 'favorite' | 'all'
