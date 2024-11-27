@@ -12,7 +12,7 @@ const Home = () => {
           <div className="text-white text-lg font-bold">MyApp</div>
           <div className="flex items-center gap-6">
             <span className="text-white">{email}</span>
-                      <LogoutButton/>
+            <LogoutButton />
           </div>
         </div>
       </nav>

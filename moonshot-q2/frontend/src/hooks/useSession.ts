@@ -1,18 +1,25 @@
-// import { useNavigate } from "react-router-dom";
-import { useGetSessionQuery } from "../redux/api/api-slice";
+import { useGetSessionMutation } from "../redux/api/api-slice";
 import { setCredentials } from "../redux/features/auth-slice";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useEffect, useLayoutEffect } from "react";
 
 const useSession = () => {
-  const { data, isLoading } = useGetSessionQuery("");
+  const [getSession,{ isLoading }] = useGetSessionMutation();
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
-  //  const navigate = useNavigate();
-   dispatch(setCredentials(data));
-  //  if (data) {
-  //    navigate("/");
-  //  }
 
-  return { data, isLoading };
+  useLayoutEffect(() => {
+    const fetchSession = async () => {
+      const data = await getSession('').unwrap();
+      // if(!data) return;
+      dispatch(setCredentials(data));
+    }
+    
+     fetchSession();
+    
+  }, [])
+
+  return { user, isLoading };
 };
 
 export default useSession;

@@ -24,7 +24,7 @@ const backendApi = createApi({
     logout: builder.mutation({
       query: () => `/auth/logout`,
     }),
-    getSession: builder.query({
+    getSession: builder.mutation({
       query: () => `/auth/session`,
     }),
     getDataset: builder.mutation({
@@ -52,7 +52,7 @@ export const {
   useLoginMutation,
   useSignupMutation,
   useLogoutMutation,
-  useGetSessionQuery,
+  useGetSessionMutation,
   useGetDatasetMutation,
   useGetFiltersMutation,
 } = backendApi;

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface DatasetState {
+export interface DatasetState {
   barChart: {
     features: string[];
     times: number[];
@@ -67,12 +67,21 @@ export const datasetSlice = createSlice({
     },
     setFilters: (state, action) => {
       state.filtersApplied = action.payload;
-    }
+    },
+    setFilterAgeGroup: (state, action) => {
+      state.filtersApplied.ageGroup = action.payload;
+    },
+    setFilterGender: (state, action) => {
+      state.filtersApplied.gender = action.payload;
+    },
+    setFilterDateRange: (state, action) => {
+      state.filtersApplied.dateRange = action.payload;
+    },
 
   },
 });
 
-export const { setBarChart, setLineChart, setFilterData, setFilters } =
+export const { setBarChart, setLineChart, setFilterData, setFilters, setFilterAgeGroup, setFilterDateRange, setFilterGender } =
   datasetSlice.actions;
 
 export default datasetSlice.reducer;

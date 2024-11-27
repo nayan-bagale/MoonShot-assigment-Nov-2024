@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import { setFilterAgeGroup, setFilterDateRange, setFilterGender } from '../../redux/features/dataset-slice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setFilters } from '../../redux/features/dataset-slice';
+import ShareChartButton from './ShareChartButton';
 
 
 export interface Filters {
@@ -12,42 +13,28 @@ export interface Filters {
 }
 
 
-interface FilterProps {
-    onApplyFilters: (filters: Filters) => void;
-}
-
-const FilterPanel: React.FC<FilterProps> = ({ onApplyFilters }) => {
-    const { ageGroup, gender, date } = useAppSelector((state) => state.dataset.filtersData);
+const FilterPanel: React.FC = () => {
+    const { ageGroup: ageGroupList, gender: genderList, date } = useAppSelector((state) => state.dataset.filtersData);
     const dispatch = useAppDispatch()
 
-    const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
-        from: new Date(date?.start), to: new Date(date?.start)
-    });
+    const { ageGroup, gender, dateRange } = useAppSelector((state) => state.dataset.filtersApplied);
 
-    const handleSubmit = (e:any) => {
-        e.preventDefault()
+    const dateRangeFrom = new Date(dateRange?.start || Date.now());
+    const dateRangeTo = new Date(dateRange?.end || Date.now());
 
-        dispatch(setFilters({
-            ageGroup: e.target[0].value,
-            gender: e.target[1].value,
-            dateRange: { start: dateRange.from.toISOString(), end: dateRange.to.toISOString() } 
-        }))
-        onApplyFilters({ 
-            ageGroup: e.target[0].value, 
-            gender: e.target[1].value, 
-            dateRange: { start: dateRange.from.toISOString(), end: dateRange.to.toISOString() } 
-        });
-    }
-    console.log('Rendering')
     const handleDateRangeSelect = (range: { from?: Date; to?: Date }) => {
-        setDateRange(range);
-        console.log('Selected Date Range:', range); // Replace with API call or state update logic
+        const date = {
+            start: range.from?.toISOString() || '',
+            end: range.to?.toISOString() || '',
+        }
+        dispatch(setFilterDateRange(date));
+        // console.log('Selected Date Range:', range); // Replace with API call or state update logic
     };
 
     return (
         <div className="p-4 border border-gray-300 rounded-lg shadow-sm bg-white mb-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Filters</h3>
-            <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
+            <div className="flex w-full flex-col gap-4">
                 <div className='flex flex-row gap-8  w-full'>
                     <div className=' flex flex-col w-full gap-4'>
                         {/* Age Group Filter */}
@@ -55,8 +42,10 @@ const FilterPanel: React.FC<FilterProps> = ({ onApplyFilters }) => {
                             <label className="block text-gray-700 font-semibold mb-2">Age Group</label>
                             <select
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                value={ageGroup}
+                                onChange={(e) => dispatch(setFilterAgeGroup(e.target.value))}
                             >
-                                {ageGroup.map((item) => (<option value={item}>{item}</option>))}
+                                {ageGroupList.map((item) => (<option value={item}>{item}</option>))}
                             </select>
                         </div>
 
@@ -65,12 +54,13 @@ const FilterPanel: React.FC<FilterProps> = ({ onApplyFilters }) => {
                             <label className="block text-gray-700 font-semibold mb-2">Gender</label>
                             <select
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                value={gender}
+                                onChange={(e) => dispatch(setFilterGender(e.target.value))}
                             >
-                                {gender.map((item) => (<option value={item}>{item}</option>))}
+                                {genderList.map((item) => (<option value={item}>{item}</option>))}
                             </select>
                         </div>
                     </div>
-
 
                     {/* Date Range Selector */}
                     <div className=' flex w-full flex-col'>
@@ -78,7 +68,7 @@ const FilterPanel: React.FC<FilterProps> = ({ onApplyFilters }) => {
                         <div className="flex flex-col w-fit space-x-2">
                             <DayPicker
                                 mode="range"
-                                selected={dateRange}
+                                selected={{ from: dateRangeFrom, to: dateRangeTo }}
                                 defaultMonth={new Date(date?.start)}
                                 startMonth={new Date(date?.start)}
                                 endMonth={new Date(date?.end)}
@@ -94,16 +84,8 @@ const FilterPanel: React.FC<FilterProps> = ({ onApplyFilters }) => {
                         </div>
                     </div>
                 </div>
-                <button
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700"
-                    // onClick={applyFilters}
-                    type='submit'
-                >
-                    Apply Filters
-                </button>
-            </form>
-
-
+            </div>
+            <ShareChartButton />
         </div>
     );
 };

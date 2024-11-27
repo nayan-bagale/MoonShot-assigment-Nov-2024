@@ -1,32 +1,31 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../redux/hooks';
+// import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../redux/api/api-slice';
 import { setCredentials } from '../../redux/features/auth-slice';
-import useCheckAuthenticated from '../../hooks/useCheckAuthenticated';
+import { useAppDispatch } from '../../redux/hooks';
 // import useSession from '../../hooks/useSession';
 
-const Login = () => {
+const Login = ({ setAuth}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  // useSession()
-
   const dispatch = useAppDispatch();
-  const [loginApi, {isLoading}] = useLoginMutation()
+  const [loginApi, { isLoading }] = useLoginMutation()
+  // const location = useLocation();
+  // const navigate = useNavigate();
 
-  useCheckAuthenticated()
+  // const redirectTo = new URLSearchParams(location.search).get('redirectTo') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try{
-      const loginRes = await loginApi({email, password}).unwrap()
+    try {
+      const loginRes = await loginApi({ email, password }).unwrap()
       console.log('Login response:', loginRes)
       dispatch(setCredentials(loginRes))
       setError('')
+      // navigate(redirectTo)
 
-    }catch(err:any){
+    } catch (err: any) {
       console.error('Login error:', err)
       setError(err.data.message)
     }
@@ -70,11 +69,11 @@ const Login = () => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               disabled={isLoading}
             >
-               Login
+              Login
             </button>
-            <Link to="/signup" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+            <button onClick={() => setAuth('signup')} className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
               Sign Up
-            </Link>
+            </button>
           </div>
         </form>
       </div>

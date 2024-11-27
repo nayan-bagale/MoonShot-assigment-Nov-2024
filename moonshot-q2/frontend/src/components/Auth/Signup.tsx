@@ -1,19 +1,17 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import { useSignupMutation } from '../../redux/api/api-slice';
-import useSession from '../../hooks/useSession';
+// import useSession from '../../hooks/useSession';
 
-const Signup = () => {
+const Signup = ({ setAuth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [signupApi, { isLoading }] = useSignupMutation()
-  // useSession()
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +25,7 @@ const Signup = () => {
       const signupRes = signupApi({ email, password }).unwrap();
       console.log('Signup response:', signupRes);
       setSuccess('Signup successful');
-      navigate('/login');
+      // navigate('/login');
     } catch (error:any) {
       console.error('Signup error:', error);
       setError(error.data.message);
@@ -89,9 +87,9 @@ const Signup = () => {
             >
               Sign Up
             </button>
-            <Link to="/login" className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+            <button onClick={() => setAuth('login')} className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
               Already have an account? Login
-            </Link>
+            </button>
           </div>
         </form>
       </div>

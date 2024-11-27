@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useGetDatasetMutation, useGetFiltersMutation } from '../../redux/api/api-slice';
-import { setBarChart, setFilterData, setLineChart } from '../../redux/features/dataset-slice';
+import { setBarChart, setFilterData, setFilters, setLineChart } from '../../redux/features/dataset-slice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 import FilterPanel, { Filters } from './Filters';
+import useFiltersFromURL from '../../hooks/useFiltersFromURL';
+import useFetchFiltersAppliedData from '../../hooks/useFetchFiltersAppliedData';
 
 const Dashboard = () => {
     const barChartData = useAppSelector((state) => state.dataset.barChart)
@@ -14,6 +16,8 @@ const Dashboard = () => {
     const [getFilters] = useGetFiltersMutation();
 
     const dispatch = useAppDispatch();
+    useFiltersFromURL();
+    useFetchFiltersAppliedData();
 
     useLayoutEffect(() => {
         const fetchDataset = async () => {
@@ -35,16 +39,11 @@ const Dashboard = () => {
         dispatch(setLineChart({ times, values }))
     };
 
-    const onApplyFilters = async (filters: Filters) => {
-        const data = await getDataset({ ...filters, dateRange: JSON.stringify(filters.dateRange) }).unwrap()
-        dispatch(setBarChart(data));
-        console.log(data)
-    }
 
     return (
         <div className=' flex justify-center flex-col gap-10'>
             <div>
-                <FilterPanel onApplyFilters={onApplyFilters} />
+                <FilterPanel />
             </div>
             <div className=' flex justify-center gap-10'>
                 <div>
