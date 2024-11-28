@@ -6,10 +6,15 @@ import data from "./routes/data";
 import filters from './routes/filters'
 const app = express();
 // Cross Origin Resource Sharing
-app.use(cors({
-    origin:true,
-    credentials:true
-}));
+app.use(
+  cors({
+    origin: [
+      "https://moon-shot-assigment-nov-2024-74t6.vercel.app",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
+);
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
