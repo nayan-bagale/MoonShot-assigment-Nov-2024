@@ -24,11 +24,11 @@ interface LineChartProps {
 const LineChart = ({ data, labels }: LineChartProps) => {
     const chartRef = useRef(null);
 
-    const handleResetZoom = () => {
-        if (chartRef.current) {
-            (chartRef.current as any).resetZoom();
-        }
-    };
+    // const handleResetZoom = () => {
+    //     if (chartRef.current) {
+    //         (chartRef.current as any).resetZoom();
+    //     }
+    // };
 
     const chartOptions: ChartOptions<'line'> = {
         responsive: true,
@@ -71,7 +71,7 @@ const LineChart = ({ data, labels }: LineChartProps) => {
         <div className="p-4 border w-[40rem] h-96 border-gray-300 rounded-lg shadow-sm bg-white">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Line Chart</h3>
             <Line ref={chartRef} data={chartData} options={chartOptions} />
-            <button onClick={handleResetZoom}>Reset Zoom</button>
+            {/* <button onClick={handleResetZoom}>Reset Zoom</button> */}
         </div>
 
     );

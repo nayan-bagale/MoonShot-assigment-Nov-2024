@@ -1,7 +1,7 @@
+import { useLayoutEffect } from "react";
 import { useGetSessionMutation } from "../redux/api/api-slice";
 import { setCredentials } from "../redux/features/auth-slice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { useEffect, useLayoutEffect } from "react";
 
 const useSession = () => {
   const [getSession,{ isLoading }] = useGetSessionMutation();

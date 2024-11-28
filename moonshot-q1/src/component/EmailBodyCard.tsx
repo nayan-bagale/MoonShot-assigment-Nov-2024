@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import useFetchEmailBody from '../hook/useFetchEmailBody'
-import { useEmail } from '../context/EmailContextAPI';
+import { useEffect, useState } from 'react';
 import { EmailBodyResT } from '../@types/email';
-import Card from './ui/card';
+import { useEmail } from '../context/EmailContextAPI';
+import useFetchEmailBody from '../hook/useFetchEmailBody';
 import { formatTimeStamp } from '../utils/formateTimeStamp';
+import Card from './ui/card';
 
 const EmailBodyCard = () => {
     const [getEmailBody, { isLoading, isError }] = useFetchEmailBody();
@@ -24,7 +24,7 @@ const EmailBodyCard = () => {
             markFavorite(selectedEmail);
         }
     }
-
+    
     const timeStamp = selectedEmail ? formatTimeStamp(new Date(selectedEmail.date)) : { date: '', time: '' }
 
     return (

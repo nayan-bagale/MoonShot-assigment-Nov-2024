@@ -1,16 +1,17 @@
 import { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
 import { useSignupMutation } from '../../redux/api/api-slice';
-// import useSession from '../../hooks/useSession';
 
-const Signup = ({ setAuth }) => {
+interface SignupProps {
+  setAuth: any;
+}
+
+const Signup = ({ setAuth }: SignupProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // const navigate = useNavigate();
   const [signupApi, { isLoading }] = useSignupMutation()
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,7 +26,6 @@ const Signup = ({ setAuth }) => {
       const signupRes = signupApi({ email, password }).unwrap();
       console.log('Signup response:', signupRes);
       setSuccess('Signup successful');
-      // navigate('/login');
     } catch (error:any) {
       console.error('Signup error:', error);
       setError(error.data.message);

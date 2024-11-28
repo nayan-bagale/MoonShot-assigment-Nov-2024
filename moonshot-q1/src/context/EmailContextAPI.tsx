@@ -2,7 +2,15 @@ import React, { useContext, useMemo, useState } from 'react';
 import { EmailContentT, EmailContextT, EmailFilterT, EmailT } from '../@types/email';
 import useFetchEmails from '../hook/useFetchEmails';
 
-const EmailContext = React.createContext<EmailContextT>({});
+const EmailContext = React.createContext<EmailContextT>({
+    emails: [],
+    markRead: () => {},
+    markFavorite: () => {},
+    selectedEmail: null,
+    setSelectedEmail: () => {},
+    filter: 'all',
+    setFilter: () => {},
+});
 
 const EmailProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 

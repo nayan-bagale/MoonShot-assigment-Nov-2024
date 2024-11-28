@@ -1,7 +1,6 @@
 import EmailBodyCard from './component/EmailBodyCard';
 import EmailFilters from './component/EmailFilters';
 import EmailShortCard from './component/EmailShortCards';
-import Pagination from './component/ui/pagination';
 import { useEmail } from './context/EmailContextAPI';
 import { cn } from './lib/utils';
 function App() {

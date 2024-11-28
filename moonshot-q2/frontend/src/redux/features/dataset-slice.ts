@@ -12,7 +12,7 @@ export interface DatasetState {
   filtersApplied: {
     ageGroup: "15-25" | ">25" | "none";
     gender: "Male" | "Female" | "none";
-    dateRange: { start: string; end: string } | {}; // ISO date strings
+    dateRange: { start: string; end: string }; // ISO date strings
   };
   filtersData: {
     ageGroup: string[];
@@ -36,7 +36,7 @@ const initialState: DatasetState = {
   filtersApplied: {
     ageGroup: "none",
     gender: "none",
-    dateRange: {},
+    dateRange: { start: "", end: "" },
   },
   filtersData: {
     ageGroup: [],

@@ -1,20 +1,18 @@
 import { useState } from 'react';
-// import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../redux/api/api-slice';
 import { setCredentials } from '../../redux/features/auth-slice';
-import { useAppDispatch } from '../../redux/hooks';
-// import useSession from '../../hooks/useSession';
+import { useAppDispatch } from '../../redux/hooks';;
 
-const Login = ({ setAuth}) => {
+interface LoginProps {
+  setAuth: any
+}
+
+const Login = ({ setAuth }: LoginProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
   const [loginApi, { isLoading }] = useLoginMutation()
-  // const location = useLocation();
-  // const navigate = useNavigate();
-
-  // const redirectTo = new URLSearchParams(location.search).get('redirectTo') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +21,6 @@ const Login = ({ setAuth}) => {
       console.log('Login response:', loginRes)
       dispatch(setCredentials(loginRes))
       setError('')
-      // navigate(redirectTo)
 
     } catch (err: any) {
       console.error('Login error:', err)

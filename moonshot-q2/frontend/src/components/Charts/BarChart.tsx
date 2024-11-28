@@ -31,7 +31,7 @@ const BarChart = ({ data, labels, onBarClick }: BarChartProps) => {
                 mode: 'nearest',
             },
         },
-        onClick: (event, elements) => {
+        onClick: (_, elements) => {
             if (elements.length > 0) {
                 const index = elements[0].index;
                 const clickedCategory = labels[index];
